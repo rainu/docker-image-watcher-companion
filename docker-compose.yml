@@ -1,0 +1,38 @@
+version: '2.1'
+
+services:
+  docker-image-watcher:
+    image: rainu/docker-image-watcher
+    build:
+      context: ./
+    environment:
+      DATABASE_HOST: postgres-db
+    ports:
+      - 8080:8080
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
+  docker-image-watcher-companion:
+    image: rainu/docker-image-watcher-companion
+    build:
+      context: ./companion/
+    environment:
+      OBSERVATION_0_IMAGE: alpine
+      OBSERVATION_0_TRIGGER_NAME: myTrigger
+      OBSERVATION_0_TRIGGER_URL: http://example.org/myTrigger
+    depends_on:
+      - docker-image-watcher
+    restart: on-failure
+
+  postgres-db:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

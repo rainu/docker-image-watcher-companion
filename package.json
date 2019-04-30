@@ -1,0 +1,19 @@
+{
+  "name": "docker-image-watcher-companion",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "rainu <rainu@raysha.de> (http://github.com/rainu)",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --target node --mode development ./index.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "rainu-env-parser": "^1.1.2"
+  },
+  "devDependencies": {
+    "webpack": "4.29.6",
+    "webpack-cli": "3.2.3"
+  }
+}
